@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\tanggapan;
+use App\pengaduan;
 
 class tanggapanController extends Controller
 {
@@ -14,8 +15,9 @@ class tanggapanController extends Controller
      */
     public function index()
     {
+        $pengaduan = Pengaduan::all();
         $tanggapan = Tanggapan::all();
-        return view('tanggapan.index', compact('tanggapan'));
+        return view('tanggapan.index',compact('tanggapan','pengaduan'));
     }
 
     /**
@@ -25,7 +27,9 @@ class tanggapanController extends Controller
      */
     public function create()
     {
-        return view('tanggapan.create');
+        $pengaduan = Pengaduan::get();
+        $tanggapan = Tanggapan::all();
+        return view('tanggapan.create', compact('pengaduan','tanggapan'));
     }
 
     /**
@@ -36,14 +40,21 @@ class tanggapanController extends Controller
      */
     public function store(Request $request)
     {
-        Tanggapan   ::create([
-    		'id_tanggapan' => $request->id_tanggapan,
-    		'tgl_tanggapan' => $request->tgl_tanggapan,
-            'tanggapan' => $request->tanggapan,
-            'nik' => $request->nik
-    	]);
+        $this->validate($request,[
+            'id_pengaduan' => 'required',
+            'tgl_tanggapan' => 'required',
+            'tanggapan' => 'required',
+            'nik'=>'required'
+        ]);
 
-        return redirect('tanggapan');
+        Tanggapan::create([
+            'id_pengaduan' => $request->id_pengaduan,
+            'tgl_tanggapan' => $request->tgl_tanggapan,
+            'tanggapan' => $request->tanggapan,
+            'nik' => $request->nik,
+        ]);
+
+            return redirect('/tanggapan');
     }
 
     /**
@@ -79,21 +90,20 @@ class tanggapanController extends Controller
     public function update(Request $request, $id_pengaduan)
     {
         $this->validate($request,[
-            'tgl_pengaduan' => 'required', 
-            'nik' => 'required', 
-            'isi_laporan' => 'required',
-             'foto' =>'required', 
-             'status' => 'required' 
-            ]);
+            'id_pengaduan' => 'required',
+            'tgl_tanggapan' => 'required',
+            'tanggapan' => 'required',
+            'nik' => 'required',
+         ]);
 
-        $tanggapan = Tanggapan::find($id_tanggapan); 
-        $tanggapan->pengaduan = $request->pengaduan; 
-        $tanggapan->nik = $request->nik; 
-        $tanggapan->isi_laporan = $request->isi_laporan;
-        $tanggapan->foto = $request->foto; 
-        $tanggapan->status = $request->status;
-        $tanggapan->save(); 
-        return redirect('/tanggapan');
+         $tanggapan = Tanggapan::find('$id_tanggapan');
+         $tanggapan->id_pengaduan = $request->id_pengaduan;
+         $tanggapan->tgl_tanggapan = $request->tgl_tanggapan;
+         $tanggapan->tanggapan = $request->tanggapan;
+         $tanggapan->nik = $request->nik;
+         $tanggapan->save();
+
+         return redirect('tanggapan');
     }
 
     /**
@@ -104,6 +114,11 @@ class tanggapanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tanggapan = Tanggapan::find($id);  
+        $tanggapan->delete();
+
+        Pengaduan::where('id_pengaduan','$id')->delete();
+
+        return redirect('/tanggapan');                                                                                                                                   
     }
 }

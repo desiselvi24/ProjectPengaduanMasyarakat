@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\pengaduan;
+use App\tanggapan;
 
 class PengaduanController extends Controller
 {
@@ -14,8 +15,10 @@ class PengaduanController extends Controller
      */
     public function index()
     {
-        $pengaduan = pengaduan::all();
-        return view ('pengaduan.index', compact('pengaduan'));    }
+        $tanggapan = Tanggapan::all();
+        $pengaduan = Pengaduan::all();
+        return view('pengaduan.index', compact('pengaduan','tanggapan'));   
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -24,7 +27,8 @@ class PengaduanController extends Controller
      */
     public function create()
     {
-        return view('pengaduan.create'); 
+        $pengaduan = Pengaduan::all();
+        return view('pengaduan.create', compact('pengaduan'));
     }
 
     /**
@@ -41,14 +45,19 @@ class PengaduanController extends Controller
             'isi_laporan' => 'required',
             'foto' => 'required',
             'status' => 'required'
+
         ]);
- 
-        Pengaduan::create([
+
+        $imgName = $request->foto->getClientOriginalName(). '-' . time(). '.' . $request->foto->extension();
+        $request->foto->move(public_path('image'), $imgName);
+
+        pengaduan::create([
             'tgl_pengaduan' => $request->tgl_pengaduan,
             'nik' => $request->nik,
             'isi_laporan' => $request->isi_laporan,
-            'foto' => $request->foto,
+            'foto' => $imgName,
             'status' => $request->status
+
         ]);
 
         return redirect('/pengaduan');
@@ -101,7 +110,7 @@ class PengaduanController extends Controller
         $pengaduan->foto = $request->foto;
         $pengaduan->status = $request->status;
         $pengaduan->save();
-        return redirect('/pengaduan');
+        return redirect('/pengaduan')->with('success', 'Task Created Successfully!');;
     }
 
     /**
@@ -113,6 +122,6 @@ class PengaduanController extends Controller
     public function destroy($id)
     {
         pengaduan::where('id_pengaduan',$id)->delete();
-        return redirect('/pengaduan');
+        return redirect('/pengaduan')->with('success', 'Task Created Successfully!');;
     }
 }

@@ -14,17 +14,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('Ladingpage.home');
 });
+
+
 
 Route::get('/beranda','BerandaController@index');
 
+Route::get('/login', function() {
+    return view('Halamandepan.Pengguna.login');
+});
+Route::post('/postlogin','LoginController@postlogin')->name('postlogin');
+
 //tanggapan
 Route::get('/tanggapan','TanggapanController@index');
-Route::get('/tanggapan/create','TanggapanController@create');
-Route::post('/tanggapan/store','TanggapanController@store');
+Route::get('/tanggapan/create','tanggapanController@create');
+Route::post('/tanggapan/store','tanggapanController@store');
 Route::get('/tanggapan/edit/{id}', 'TanggapanController@edit');
 Route::put('/tanggapan/update/{id}', 'TanggapanController@update');
+Route::get('/tanggapan/destroy/{id_tanggapan}', 'TanggapanController@destroy');
+
 
 
 //pengaduan

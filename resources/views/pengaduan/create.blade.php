@@ -13,7 +13,7 @@ html>
                 </div>
                 <div class="card-body">
 
-                    <form method="post" action="/pengaduan/store">
+                    <form method="post" action="/pengaduan/store" enctype="multipart/form-data">
 
                         {{ csrf_field() }}
 
@@ -53,7 +53,7 @@ html>
 
                     <div class="form-group">
                         <label>Foto</label>
-                        <input type="foto" name="foto" class="form-control" placeholder="foto pengaduan .."></textarea>
+                        <input type="file" name="foto" class="from-control" placeholder="foto">
 
                         @if($errors->has('foto'))
                             <div class="text-danger">

@@ -49,18 +49,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($tanggapan as $tanggapan)
+                             @foreach ($tanggapan as $p)
+                            @foreach ($pengaduan as $d)
                             <tr>
-                                <td>{{ $tanggapan->id_tanggapan }}</td>
-                                <td>{{ $tanggapan->tgl_tanggapan }}</td>
-                                <td>{{ $tanggapan->tanggapan }}</td>
-                                <td>{{ $tanggapan->nik }}</td>
+                                <td>{{ $d->isi_laporan }}</td>
+                                <td>{{ $p->tgl_tanggapan }}</td>
+                                <td>{{ $p->tanggapan }}</td>
+                                <td>{{ $p->nik }}</td>
                                 <td>
-                                    <a href="/tanggapan/edit/{{ $tanggapan->id }}" class="btn btn-warning">Edit</a>
-                                    <a href="/tanggapan/hapus/{{ $tanggapan->id }}" class="btn btn-danger">Hapus</a>
+                                    <a href="/tanggapan/destroy/{{ $p->id_tanggapan }}" class="btn btn-danger">Hapus</a>
                                 </td>
                             </tr>
                             @endforeach
+                             @endforeach
                         </tbody>
                     </table>
                 </div>

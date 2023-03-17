@@ -43,15 +43,16 @@
                         {{ csrf_field() }}
  
                         <div class="form-group">
-                            <label>id_tanggapan</label>
-                            <input type="text" name="id_tanggapan" class="form-control" placeholder=""></input>
- 
-                            @if($errors->has('id_tanggapan'))
-                                <div class="text-danger">
-                                    {{ $errors->first('id_tanggapan')}}
-                                </div>
-                            @endif
- 
+                            <label class="col-lg-4 col-form-label" for="val-tanggal_kerusakan">Pengaduan  </label>
+                            <div class="col-lg-6">
+                                <select name="id_pengaduan" id="" class="form-control">
+                                    <option value="">-- Pilih Pengaduan --</option>
+                                    <!-- Barang -->
+                                    @foreach($pengaduan as $pengaduan)
+                                        <option value="{{ $pengaduan->id_pengaduan }}">{{ $pengaduan->isi_laporan }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
  
                         <div class="form-group">
